@@ -1,263 +1,165 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox as mb
+from PIL import ImageTk, Image
 import random
+import shutil
+import os
 
-#Списки для фукнций
+list = ["Камень", "Ножницы", "Бумага"]
 
-list1 = [ 'Камень', 'Ножницы', 'Бумага']
+def choice1():
+  l.configure(image="")
+  l2.configure(image="")
+  l4.configure(text="")
+  l3.configure(text="Камень, ножницы, бумага!")
+  root.after(1500, count)
 
-list2 = ['Ты заработал 10 очков!', '+ 10 очков к твоему счёту!', '10 очков твои! Ура :D', 'Молодец! + 10 очков к твоему счёту!']
+def choice2():
+  l.configure(image="")
+  l2.configure(image="")
+  l4.configure(text="")
+  l3.configure(text="Камень, ножницы, бумага!")
+  root.after(1500, count2)
+  
+def choice3():
+  l.configure(image="")
+  l2.configure(image="")
+  l4.configure(text="")
+  l3.configure(text="Камень, ножницы, бумага!")
+  root.after(1500, count3)
+    
+def count():
+  l3.configure(text="Раз, два, три!")
+  root.after(1500, _rock)
 
-list3 = ['-10 очков от твоего счёта!', 'Жаль, но ты потерял 10 очков!', '-10 очков! Не расстраивайся!']
+def count2():
+  l3.configure(text="Раз, два, три!")
+  root.after(1500, _scissors)  
+  
+def count3():
+  l3.configure(text="Раз, два, три!")
+  root.after(1500, _paper)
+  
+def _rock():
+  answer = random.choice(list)
+  l.configure(image=rock)
+  l.grid(padx=2, pady=20)
+  l4.configure(text="Выбери новый жест:")
+  if answer == "Камень":
+    l2.configure(image=rock2)
+    l2.grid(padx=410, pady=20)
+    l3.configure(text="Ничья!")
+  if answer == "Ножницы":
+    l2.configure(image=scissors2)
+    l2.grid(padx=380, pady=15)
+    l3.configure(text="Ты победил!")
+  if answer == "Бумага":
+    l2.configure(image=paper2)
+    l2.grid(padx=380, pady=0)
+    l3.configure(text="Ты проиграл!")
+    
+def _scissors():
+  answer = random.choice(list)
+  l.configure(image=scissors)
+  l.grid(padx=10, pady=15)
+  l4.configure(text="Выбери новый жест:")
+  if answer == "Камень":
+    l2.configure(image=rock2)
+    l2.grid(padx=410, pady=20)
+    l3.configure(text="Ты проиграл!")
+  if answer == "Ножницы":
+    l2.configure(image=scissors2)
+    l2.grid(padx=380, pady=15)
+    l3.configure(text="Ничья!")
+  if answer == "Бумага":
+    l2.configure(image=paper2)
+    l2.grid(padx=380, pady=0)
+    l3.configure(text="Ты победил!")
 
-list4 = ['Ничья!', 'Ого, а у нас ничья!', 'Ничья! Давай сыграем ещё!', 'Эх, ничья! Давай сыграем ещё!']
-
-list5 = ['Ура! Ты победил! :)', 'Ты выиграл! :D', 'Ура! Ты выиграл!', 'Молодец, ты набрал 100 очков!\nПобеда!']
-
-list6 = ['Ты проиграл! Не расстраивайся!', 'Ты проиграл! :(', 'В следующий раз, тебе повезёт!', 'Не расстраивайся! Давай сыграем ещё?']
-
-list7 = ['Играем! Выбери жест!', 'Начнем! Выбери жест!', 'Давай заново! Выбирай жест!']
-
-#Переменные для счётчика
-
-score = 20
-
-#Инструкция
-
+def _paper():
+  answer = random.choice(list)
+  l.configure(image=paper)
+  l.grid(padx=10, pady=0)
+  l4.configure(text="Выбери новый жест:")
+  if answer == "Камень":
+    l2.configure(image=rock2)
+    l2.grid(padx=410, pady=20)
+    l3.configure(text="Ты победил!")
+  if answer == "Ножницы":
+    l2.configure(image=scissors2)
+    l2.grid(padx=380, pady=15)
+    l3.configure(text="Ты проиграл!")
+  if answer == "Бумага":
+    l2.configure(image=paper2)
+    l2.grid(padx=380, pady=0)
+    l3.configure(text="Ничья!")
+    
 def how_to_use(): 
-	answer = mb.showinfo(title = "Справка", message = "Инструкция", detail = "1. Нажми на любой жест, чтобы\nначать!\n2. Используй кнопку «Выйти»,\nчтобы закрыть игру.")
-	
-def restart():
-    answer = mb.askyesno(title = "Новая игра", message = "Ты действительно хочешь\n     начать новую игру?")
-    if answer == True:
-        global score
-        score = 10    
-        scr.set(str(score))
-        text.configure(state = NORMAL)        
-        text.delete("1.0", END)
-        text.insert("1.0", random.choice(list7))
-        text.configure(state = DISABLED)
-        R.configure(state = NORMAL)
-        S.configure(state = NORMAL)
-        P.configure(state = NORMAL)
-       
-#Правила игры
+  answer = mb.showinfo(title="Справка", message="Инструкция", detail="1. Нажми на любой жест, чтобы\nначать игру.\n2. Выбранный жест отобразится\nв левой части окна.\n3. Используй кнопку «Выйти»,\nчтобы закрыть игру.")
 
 def game_rules(): 
-	answer = mb.showinfo(title = "Справка", message = "Правила игры", detail = "1. Камень разбивает ножницы.\n2. Ножницы режут бумагу.\n3. Бумага оборачивает камень.\n4. За победу даётся + 10 очков,\nза поражение - 10 очков.\n5. Чтобы победить в игре, нужно\nнабрать 100 очков.\n6. Если число очков < 0, то игроку\nприсуждается поражение!")
-#Функция выхода
-
+  answer = mb.showinfo(title="Справка", message="Правила игры:", detail="1. Камень разбивает ножницы.\n2. Ножницы режут бумагу.\n3. Бумага оборачивает камень.")
+  
 def exit():
-    answer = mb.askyesno( title="Выход", message="Ты действительно хочешь\n         выйти из игры?")
-    if answer == True:
-        root.quit()
-    else:
-        pass
-
-#Камень
-
-def rock():
-    global score    
-    answer = random.choice(list1)
-    text.configure(state = NORMAL)
-    text.delete("1.0", END)  
-    text.insert("1.0", "Камень, ножницы, бумага!")
-    text.insert(END, "\nРаз, два, три!")
-    text.insert(END, "\nТвой выбор: Камень")
+  answer = mb.askyesno(title="Выход", message="Ты действительно хочешь\n         выйти из игры?")
+  if answer == True:
+    shutil.rmtree("Жесты")
+    root.quit()
+  else:
+    pass	
     
-    if answer == 'Камень':              
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list4))
-        text.configure(state = DISABLED)
-        
-    if answer == 'Ножницы':       
-        score += 10
-        scr.set(str(score))       
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list2))
-        text.configure(state = DISABLED)
-        
-    if answer == 'Бумага':        
-        score -= 10
-        scr.set(str(score))       
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list3))
-        text.configure(state = DISABLED)
-        
-    if score < 0:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", random.choice(list6))
-        text.configure(state = DISABLED)
-        
-    if score == 100:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", "Ты победил!")
-        text.configure(state = DISABLED)
-            
-#Ножницы
-    
-def scissors():
-    global score    
-    answer = random.choice(list1)
-    text.configure(state = NORMAL)
-    text.delete("1.0", END)  
-    text.insert("1.0", "Камень, ножницы, бумага!")
-    text.insert(END, "\nРаз, два, три!")
-    text.insert(END, "\nТвой выбор: Ножницы")
-    
-    if answer == 'Камень':        
-        score -= 10
-        scr.set(str(score))
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list3))        
-        text.configure(state = DISABLED)
-        
-    if answer == 'Ножницы':   
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list4))       
-        text.configure(state = DISABLED)
-        
-    if answer == 'Бумага':   
-        score += 10
-        scr.set(str(score))
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list2))       
-        text.configure(state = DISABLED)
-         
-    if score < 0:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", random.choice(list6))
-        text.configure(state = DISABLED)
-        
-    if score == 100:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", "Ты победил!")
-        text.configure(state = DISABLED)
-                  
-#Бумага
-    
-def paper():
-    global score    
-    answer = random.choice(list1)
-    text.configure(state = NORMAL)
-    text.delete("1.0", END)  
-    text.insert("1.0", "Камень, ножницы, бумага!")
-    text.insert(END, "\nРаз, два, три!")
-    text.insert(END, "\nТвой выбор: Бумага")
-    
-    if answer == 'Камень': 
-        score += 10
-        scr.set(str(score))
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list2))          
-        text.configure(state = DISABLED)
-        
-    if answer == 'Ножницы': 
-        score -= 10
-        scr.set(str(score))        
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list3))             
-        text.configure(state = DISABLED)
-        
-    if answer == 'Бумага':     
-        text.insert(END, "\nМой выбор: " + str(answer))
-        text.insert(END, "\n" + random.choice(list4))               
-        text.configure(state = DISABLED)
-        
-    if score < 0:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", random.choice(list6))
-        text.configure(state = DISABLED)
-        
-    if score == 100:
-        R.configure(state = DISABLED)
-        S.configure(state = DISABLED)
-        P.configure(state = DISABLED)
-        text.configure(state = NORMAL)
-        text.delete("1.0", END)
-        text.insert("1.0", random.choice(list5))
-        text.configure(state = DISABLED)
-        
-#Окно
+def delete():
+  shutil.rmtree("Жесты")
+  root.destroy()
 
 root = Tk()
+root.title("Камень-ножницы-бумага!")
+root.geometry("560x360")
+root.resizable(width=False, height=False)
+
+if not os.path.exists("Жесты"):
+  shutil.unpack_archive("Жесты.zip", "Жесты")
 
 menubar = Menu(root)
-
-menubar = Menu(root)
-
 helpmenu = Menu(menubar, tearoff=0)
-
 menubar.add_cascade(label="Справка", menu=helpmenu)
-
-menubar.add_command(label = "Новая игра", command = restart)
-
-menubar.add_command(label = "Выйти", command = exit)
-
+menubar.add_command(label="Выйти", command=exit)
 helpmenu.add_command(label="Инструкция", command=how_to_use)
+helpmenu.add_command(label="Правила игры", command=game_rules)
+root.config(menu=menubar)
 
-helpmenu.add_command(label= "Правила игры", command=game_rules)
+l = Label(root)
+l.grid(row=0, column=0, sticky=NW, padx=10)
+l2 = Label(root)
+l2.grid(row=0, column=0, sticky=NW, padx=380)
 
-root.config(menu = menubar)
+l3 = Label(root, text="", font=('Arial', 14))
+l3.grid(row=0, column=0, padx=10, pady=180, sticky=NW)
 
-txt = StringVar()
-txt2 = StringVar()
-txt3 = StringVar()  
-scr = StringVar()
-#Текстовые надписи
+l4 = Label(root, text="Выбери свой жест:", font=('Arial', 14))
+l4.grid(row=0, column=0, padx=10, pady=220, sticky=NW)
 
-l1 = Label(root, text = "Камень, ножницы, бумага!")
-l1.grid(row = 0, column = 0, padx = 165, pady = 7, sticky = NW)
+R = Button(root, width=10, height=2, text="Камень", font=('Arial', 14), command=lambda: choice1())
+R.grid(row=0, column=0, sticky=NW, padx=20, pady=270)
 
-l2 = Label(root, text="Очки: ") 
-l2.grid(row = 2, column = 0, sticky = NW, padx = 60, pady = 7)
+S = Button(root, width=10, height=2, text="Ножницы", font=('Arial', 14), command=lambda: choice2())
+S.grid(row=0, column=0, sticky=NW, padx=220, pady=270)
 
-l6 = Label(root, text = "Выбери свой жест: ")
-l6.grid(row = 6, column = 0, padx = 60,  pady = 7, sticky = NW)
+P = Button(root, width=10, height=2, text="Бумага", font=('Arial', 14), command=lambda: choice3())
+P.grid(row=0, column=0, sticky=NW, padx=420, pady=270)
 
-#Текстовые поля
+def resize_image(path, size):
+  img = Image.open(path)
+  img = img.resize(size, Image.LANCZOS)
+  return ImageTk.PhotoImage(img)
 
-sc = Entry(root, width = 13, justify = CENTER, textvariable=scr)
-sc.configure(disabledbackground="white", disabledforeground="black", state = DISABLED)
-sc.grid(row = 2, column = 0, sticky = NW, padx = 415, pady = 7)
-scr.set(str(score))       
+rock = resize_image("Жесты/rock.png", (140, 100))
+scissors = resize_image("Жесты/scissors.png", (150, 150))
+paper = resize_image("Жесты/paper.png", (150, 150))
+rock2 = resize_image("Жесты/rock2.png", (140, 100))
+scissors2 = resize_image("Жесты/scissors2.png", (150, 150))
+paper2 = resize_image("Жесты/paper2.png", (150, 150))
 
-text = Text(width = 36, height = 5,wrap = WORD)
-text.grid(row = 1, column = 0, padx = 60,pady = 5, sticky = NW)
-text.insert("1.0", "Сыграем в камень-ножницы-бумагу?")
-text.insert(END, "\nНажми на любой жест, чтобы начать!")
-
-
-#Кнопки
-
-R = Button(root, width = 7, text = "Камень", command = lambda: rock())
-R.grid(row = 7, column = 0, sticky = NW, padx = 60, pady = 7)
-
-S = Button(root, width = 7, text = "Ножницы", command = lambda: scissors())
-S.grid(row = 7, column = 0, sticky = NW, padx = 256, pady = 7)
-
-P = Button(root, width = 7, text = "Бумага", command = lambda: paper())
-P.grid(row = 7, column = 0, sticky = NW, padx = 452, pady = 7)
-
+root.protocol("WM_DELETE_WINDOW", delete)
 root.mainloop()

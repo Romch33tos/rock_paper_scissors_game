@@ -13,9 +13,15 @@ list3 = ['-10 очков от твоего счёта!', 'Жаль, но ты п
 
 list4 = ['Ничья!', 'Ого, а у нас ничья!', 'Ничья! Давай сыграем ещё!', 'Эх, ничья! Давай сыграем ещё!']
 
+list5 = ['Ура! Ты победил! :)', 'Ты выиграл! :D', 'Ура! Ты выиграл!', 'Молодец, ты набрал 100 очков!\nПобеда!']
+
+list6 = ['Ты проиграл! Не расстраивайся!', 'Ты проиграл! :(', 'В следующий раз, тебе повезёт!', 'Не расстраивайся! Давай сыграем ещё?']
+
+list7 = ['Играем! Выбери жест!', 'Начнем! Выбери жест!', 'Давай заново! Выбирай жест!']
+
 #Переменные для счётчика
 
-score = 10
+score = 20
 
 #Инструкция
 
@@ -23,14 +29,14 @@ def how_to_use():
 	answer = mb.showinfo(title = "Справка", message = "Инструкция", detail = "1. Нажми на любой жест, чтобы\nначать!\n2. Используй кнопку «Выйти»,\nчтобы закрыть игру.")
 	
 def restart():
-    answer = mb.askyesno(title = "Новая игра", message = "Ты действительно хочешь\n        начать заново? ")
+    answer = mb.askyesno(title = "Новая игра", message = "Ты действительно хочешь\n     начать новую игру?")
     if answer == True:
         global score
         score = 10    
         scr.set(str(score))
         text.configure(state = NORMAL)        
         text.delete("1.0", END)
-        text.insert("1.0", "Сыграем ещё раз! Выбери жест!")
+        text.insert("1.0", random.choice(list7))
         text.configure(state = DISABLED)
         R.configure(state = NORMAL)
         S.configure(state = NORMAL)
@@ -85,7 +91,7 @@ def rock():
         P.configure(state = DISABLED)
         text.configure(state = NORMAL)
         text.delete("1.0", END)
-        text.insert("1.0", "Игра окончена!")
+        text.insert("1.0", random.choice(list6))
         text.configure(state = DISABLED)
         
     if score == 100:
@@ -133,7 +139,7 @@ def scissors():
         P.configure(state = DISABLED)
         text.configure(state = NORMAL)
         text.delete("1.0", END)
-        text.insert("1.0", "Игра окончена!")
+        text.insert("1.0", random.choice(list6))
         text.configure(state = DISABLED)
         
     if score == 100:
@@ -181,7 +187,7 @@ def paper():
         P.configure(state = DISABLED)
         text.configure(state = NORMAL)
         text.delete("1.0", END)
-        text.insert("1.0", "Игра окончена!")
+        text.insert("1.0", random.choice(list6))
         text.configure(state = DISABLED)
         
     if score == 100:
@@ -190,7 +196,7 @@ def paper():
         P.configure(state = DISABLED)
         text.configure(state = NORMAL)
         text.delete("1.0", END)
-        text.insert("1.0", "Ты набрал 100 очков! Молодец!")
+        text.insert("1.0", random.choice(list5))
         text.configure(state = DISABLED)
         
 #Окно
@@ -241,7 +247,7 @@ text = Text(width = 36, height = 5,wrap = WORD)
 text.grid(row = 1, column = 0, padx = 60,pady = 5, sticky = NW)
 text.insert("1.0", "Сыграем в камень-ножницы-бумагу?")
 text.insert(END, "\nНажми на любой жест, чтобы начать!")
-text.insert(END, "\nНабери 100 очков для победы!")
+
 
 #Кнопки
 

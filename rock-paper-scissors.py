@@ -7,25 +7,39 @@ import random
 
 list1 = [ 'Камень', 'Ножницы', 'Бумага']
 
-list2 = ['Ура! Ты победил! :)', 'Ты выиграл! :D', 'Ура! Ты выиграл!', 'Эх! Я ещё выиграю!', 'В следующий раз, я выиграю!']
+list2 = ['Ты заработал 10 очков!', '+ 10 очков к твоему счёту!', '10 очков твои! Ура :D', 'Молодец! + 10 очков к твоему счёту!']
 
-list3 = ['Ты проиграл! Не расстраивайся!', 'Ты проиграл! :(', 'В следующий раз, тебе повезёт!', 'Не расстраивайся! Давай сыграем ещё?']
+list3 = ['-10 очков от твоего счёта!', 'Жаль, но ты потерял 10 очков!', '-10 очков! Не расстраивайся!']
 
 list4 = ['Ничья!', 'Ого, а у нас ничья!', 'Ничья! Давай сыграем ещё!', 'Эх, ничья! Давай сыграем ещё!']
 
 #Переменные для счётчика
 
-w = 0
-l = 0
-d = 0
 score = 10
 
-def how_to_use(): 
-	answer = mb.showinfo(title = "Справка", message = "Инструкция", detail = "1. Нажми на любой жест, чтобы\nначать!\n2. В окошках снизу отображается\nстатистка игры.\n3. Используй кнопку «Выйти»,\nчтобы закрыть игру.")
+#Инструкция
 
+def how_to_use(): 
+	answer = mb.showinfo(title = "Справка", message = "Инструкция", detail = "1. Нажми на любой жест, чтобы\nначать!\n2. Используй кнопку «Выйти»,\nчтобы закрыть игру.")
+	
+def restart():
+    answer = mb.askyesno(title = "Новая игра", message = "Ты действительно хочешь\n        начать заново? ")
+    if answer == True:
+        global score
+        score = 10    
+        scr.set(str(score))
+        text.configure(state = NORMAL)        
+        text.delete("1.0", END)
+        text.insert("1.0", "Сыграем ещё раз! Выбери жест!")
+        text.configure(state = DISABLED)
+        R.configure(state = NORMAL)
+        S.configure(state = NORMAL)
+        P.configure(state = NORMAL)
+       
 #Правила игры
+
 def game_rules(): 
-	answer = mb.showinfo(title = "Справка", message = "Правила игры", detail = "1. Камень разбивает ножницы.\n2. Ножницы режут бумагу.\n3. Бумага оборачивает камень.")
+	answer = mb.showinfo(title = "Справка", message = "Правила игры", detail = "1. Камень разбивает ножницы.\n2. Ножницы режут бумагу.\n3. Бумага оборачивает камень.\n4. За победу даётся + 10 очков,\nза поражение - 10 очков.\n5. Чтобы победить в игре, нужно\nнабрать 100 очков.\n6. Если число очков < 0, то игроку\nприсуждается поражение!")
 #Функция выхода
 
 def exit():
@@ -38,38 +52,33 @@ def exit():
 #Камень
 
 def rock():
-    global score 
+    global score    
     answer = random.choice(list1)
     text.configure(state = NORMAL)
     text.delete("1.0", END)  
     text.insert("1.0", "Камень, ножницы, бумага!")
     text.insert(END, "\nРаз, два, три!")
     text.insert(END, "\nТвой выбор: Камень")
-    if answer == 'Камень':
-        global d
-        d +=1            
-        txt3.set(str(d))   
+    
+    if answer == 'Камень':              
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list4))
         text.configure(state = DISABLED)
-    if answer == 'Ножницы':      
+        
+    if answer == 'Ножницы':       
         score += 10
-        scr.set(str(score))
-        global w
-        w += 1
-        txt.set(str(w))        
+        scr.set(str(score))       
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list2))
         text.configure(state = DISABLED)
+        
     if answer == 'Бумага':        
         score -= 10
         scr.set(str(score))       
-        global l
-        l += 1
-        txt2.set(str(l))      
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list3))
         text.configure(state = DISABLED)
+        
     if score < 0:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -78,6 +87,7 @@ def rock():
         text.delete("1.0", END)
         text.insert("1.0", "Игра окончена!")
         text.configure(state = DISABLED)
+        
     if score == 100:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -90,38 +100,33 @@ def rock():
 #Ножницы
     
 def scissors():
-    global score 
+    global score    
     answer = random.choice(list1)
     text.configure(state = NORMAL)
     text.delete("1.0", END)  
     text.insert("1.0", "Камень, ножницы, бумага!")
     text.insert(END, "\nРаз, два, три!")
     text.insert(END, "\nТвой выбор: Ножницы")
-    if answer == 'Камень':       
+    
+    if answer == 'Камень':        
         score -= 10
         scr.set(str(score))
-        global l
-        l += 1 
-        txt2.set(str(l))      
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list3))        
         text.configure(state = DISABLED)
-    if answer == 'Ножницы':
-        global d
-        d +=1
-        txt3.set(str(d))   
+        
+    if answer == 'Ножницы':   
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list4))       
         text.configure(state = DISABLED)
-    if answer == 'Бумага':        
+        
+    if answer == 'Бумага':   
         score += 10
         scr.set(str(score))
-        global w
-        w += 1
-        txt.set(str(w))        
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list2))       
-        text.configure(state = DISABLED) 
+        text.configure(state = DISABLED)
+         
     if score < 0:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -130,6 +135,7 @@ def scissors():
         text.delete("1.0", END)
         text.insert("1.0", "Игра окончена!")
         text.configure(state = DISABLED)
+        
     if score == 100:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -142,38 +148,33 @@ def scissors():
 #Бумага
     
 def paper():
-    global score 
+    global score    
     answer = random.choice(list1)
     text.configure(state = NORMAL)
     text.delete("1.0", END)  
     text.insert("1.0", "Камень, ножницы, бумага!")
     text.insert(END, "\nРаз, два, три!")
     text.insert(END, "\nТвой выбор: Бумага")
-    if answer == 'Камень':      
+    
+    if answer == 'Камень': 
         score += 10
         scr.set(str(score))
-        global w
-        w += 1 
-        txt.set(str(w))      
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list2))          
         text.configure(state = DISABLED)
-    if answer == 'Ножницы':        
+        
+    if answer == 'Ножницы': 
         score -= 10
-        scr.set(str(score))
-        global l
-        l +=1
-        txt2.set(str(l))   
+        scr.set(str(score))        
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list3))             
         text.configure(state = DISABLED)
-    if answer == 'Бумага':
-        global d
-        d += 1
-        txt3.set(str(d))        
+        
+    if answer == 'Бумага':     
         text.insert(END, "\nМой выбор: " + str(answer))
         text.insert(END, "\n" + random.choice(list4))               
         text.configure(state = DISABLED)
+        
     if score < 0:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -182,6 +183,7 @@ def paper():
         text.delete("1.0", END)
         text.insert("1.0", "Игра окончена!")
         text.configure(state = DISABLED)
+        
     if score == 100:
         R.configure(state = DISABLED)
         S.configure(state = DISABLED)
@@ -203,6 +205,8 @@ helpmenu = Menu(menubar, tearoff=0)
 
 menubar.add_cascade(label="Справка", menu=helpmenu)
 
+menubar.add_command(label = "Новая игра", command = restart)
+
 menubar.add_command(label = "Выйти", command = exit)
 
 helpmenu.add_command(label="Инструкция", command=how_to_use)
@@ -223,15 +227,6 @@ l1.grid(row = 0, column = 0, padx = 165, pady = 7, sticky = NW)
 l2 = Label(root, text="Очки: ") 
 l2.grid(row = 2, column = 0, sticky = NW, padx = 60, pady = 7)
 
-l3 = Label(root, text="Количество побед: ") 
-l3.grid(row = 3, column = 0, sticky = NW, padx = 60, pady = 7)
-
-l4 = Label(root, text="Количество поражений:")
-l4.grid(row = 4, column = 0, sticky = NW, padx = 60, pady = 7)
-
-l5 = Label(root, text = "Количество ничьих: ")
-l5.grid(row = 5, column = 0, padx = 60,  pady = 7, sticky = NW)
-
 l6 = Label(root, text = "Выбери свой жест: ")
 l6.grid(row = 6, column = 0, padx = 60,  pady = 7, sticky = NW)
 
@@ -242,22 +237,11 @@ sc.configure(disabledbackground="white", disabledforeground="black", state = DIS
 sc.grid(row = 2, column = 0, sticky = NW, padx = 415, pady = 7)
 scr.set(str(score))       
 
-win = Entry(root, width = 13, justify = CENTER, textvariable=txt)
-win.configure(disabledbackground="white", disabledforeground="black", state = DISABLED)
-win.grid(row = 3, column = 0, sticky = NW, padx = 415, pady = 7)
-
-lose = Entry(root, width = 13, justify = CENTER, textvariable=txt2)
-lose.configure(disabledbackground="white", disabledforeground="black", state = DISABLED)
-lose.grid(row = 4, column = 0, sticky = NW, padx = 415, pady = 7)
-
-draw = Entry(root, width = 13, justify = CENTER, textvariable=txt3)
-draw.configure(disabledbackground="white", disabledforeground="black", state = DISABLED)
-draw.grid(row = 5, column = 0, sticky = NW, padx = 415, pady = 7)
-
 text = Text(width = 36, height = 5,wrap = WORD)
 text.grid(row = 1, column = 0, padx = 60,pady = 5, sticky = NW)
 text.insert("1.0", "Сыграем в камень-ножницы-бумагу?")
 text.insert(END, "\nНажми на любой жест, чтобы начать!")
+text.insert(END, "\nНабери 100 очков для победы!")
 
 #Кнопки
 

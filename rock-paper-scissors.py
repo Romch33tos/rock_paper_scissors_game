@@ -7,18 +7,26 @@ import os
 
 GESTURES = ["Камень", "Ножницы", "Бумага"]
 
+def set_buttons_state(state):
+    rock_button.config(state=state)
+    scissors_button.config(state=state)
+    paper_button.config(state=state)
+
 def reset_display():
     player_choice_label.configure(image="")
     computer_choice_label.configure(image="")
     prompt_label.configure(text="")
     status_label.configure(text="Камень, ножницы, бумага!")
+    set_buttons_state(tk.NORMAL)  # Разблокируем кнопки после сброса
 
 def countdown_then_show(gesture_function):
     status_label.configure(text="Раз, два, три!")
+    set_buttons_state(tk.DISABLED)  # Блокируем кнопки во время анимации
     root.after(1500, gesture_function)
 
 def prepare_gesture(gesture_function):
     reset_display()
+    set_buttons_state(tk.DISABLED)  # Блокируем кнопки при подготовке жеста
     root.after(1500, lambda: countdown_then_show(gesture_function))
 
 def show_result(player_gesture, player_image):
@@ -37,6 +45,7 @@ def show_result(player_gesture, player_image):
         result = "Ничья!" if player_gesture == "Бумага" else "Ты победил!" if player_gesture == "Ножницы" else "Ты проиграл!"
 
     status_label.configure(text=result)
+    set_buttons_state(tk.NORMAL)  # Разблокируем кнопки после показа результата
 
 def show_rock():
     show_result("Камень", rock_img_player)
